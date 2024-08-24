@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans_Tai_Le } from "next/font/google";
 import "./globals.css";
 
+import { connectToMongoDB } from "@/app/_lib/mongodb/db";
 import Header from "@/app/_components/Header";
 
 const noto = Noto_Sans_Tai_Le({
@@ -24,14 +25,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  connectToMongoDB();
   return (
     <html lang="en">
       <body
         className={`relative bg-background text-text min-h-screen flex flex-col ${noto.className}`}
       >
         <Header />
-        <div className="flex-1 px-8 py-12">
-          <main className="max-w-7xl mx-auto">{children}</main>
+        <div className="flex-1 px-8 py-12 grid">
+          <main className="max-w-7xl mx-auto w-full">{children}</main>
         </div>
       </body>
     </html>
