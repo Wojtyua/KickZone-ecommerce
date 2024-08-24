@@ -3,10 +3,16 @@ import Product from "@/app/_lib/mongodb/models/productModel";
 import { revalidatePath } from "next/cache";
 import { connectToMongoDB } from "@/app/_lib/mongodb/db";
 import { ProductType } from "@/app/_lib/mongodb/db.types";
+import { Types } from "mongoose";
 
-export const createProduct = async (productData: ProductType) => {
+type ProductResult = { success: boolean; message: string };
+type GetProductResult = ProductResult & { data: ProductType[] };
+
+// this needs use client to work
+export const createProduct = async (
+  productData: ProductType
+): Promise<ProductResult> => {
   await connectToMongoDB();
-
   try {
     // Creating a new todo using Todo model
     const newProduct = await Product.create({
@@ -20,15 +26,100 @@ export const createProduct = async (productData: ProductType) => {
       images: productData.images,
       variants: productData.variants,
     });
-    // Saving the new todo
+    // Saving the new product to the database
     newProduct.save();
-    console.log("product created");
+
     // Triggering revalidation of the specified path ("/")
     revalidatePath("/");
-    // Returning the string representation of the new todo
-    return newProduct.toString();
-  } catch (error) {
-    console.log(error);
-    return { message: "error creating product" };
+    return {
+      success: true,
+      message: `Product created successfully: ${newProduct.toString()}`,
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: `Error creating product: ${error.message}`,
+    };
+  }
+};
+
+// use client not necessary(only if you want this on click)
+export const getAllProducts = async (): Promise<GetProductResult> => {
+  try {
+    const products: ProductType[] = await Product.find();
+    return {
+      data: products,
+      success: true,
+      message: `All products fetched successfully`,
+    };
+  } catch (error: any) {
+    return {
+      data: [],
+      success: false,
+      message: `Error fetching all products: ${error.message}`,
+    };
+  }
+};
+
+export const getProductByTargetGroup = async (
+  targetGroup: "men" | "women"
+): Promise<GetProductResult> => {
+  try {
+    const products: ProductType[] = await Product.find({
+      target_group: targetGroup,
+    });
+    return {
+      data: products,
+      success: true,
+      message: `Products fetched by target group successfully`,
+    };
+  } catch (error: any) {
+    return {
+      data: [],
+      success: false,
+      message: `Error fetching products by target group: ${error.message}`,
+    };
+  }
+};
+
+export const decreaseProductQuantity = async (
+  productId: string,
+  variantSize: number,
+  amount: number
+): Promise<{ success: boolean; message: string }> => {
+  try {
+    if (amount <= 0) {
+      return { success: false, message: "Amount must be greater than 0" };
+    }
+
+    const product = await Product.findOneAndUpdate(
+      {
+        _id: new Types.ObjectId(productId),
+        variants: {
+          $elemMatch: {
+            size: variantSize,
+            quantity: { $gte: amount },
+          },
+        },
+      },
+      {
+        $inc: {
+          "variants.$.quantity": -amount,
+        },
+      },
+      { new: true }
+    );
+    if (!product) {
+      return {
+        success: false,
+        message: "Product or variant not found, or insufficient quantity",
+      };
+    }
+    return { success: true, message: "Quantity updated successfully" };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: `Error decreasing product quantity: ${error.message}`,
+    };
   }
 };
