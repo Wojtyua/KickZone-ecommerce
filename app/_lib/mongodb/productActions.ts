@@ -8,6 +8,7 @@ import { shoesData } from "@/data";
 
 type ProductResult = { success: boolean; message: string };
 type GetProductResult = ProductResult & { data: ProductType[] };
+type GetProductByIdResult = ProductResult & { data: ProductType };
 
 export async function addShoesToDatabase() {
   try {
@@ -116,6 +117,34 @@ export const getFeaturedProducts = async (): Promise<GetProductResult> => {
       data: [],
       success: false,
       message: `Error fetching featured products: ${error.message}`,
+    };
+  }
+};
+
+export const getProductById = async (
+  productId: string
+): Promise<GetProductByIdResult> => {
+  try {
+    const product: ProductType | null = await Product.findById(productId);
+
+    if (!product) {
+      return {
+        data: {} as ProductType,
+        success: false,
+        message: `Product not found with id: ${productId}`,
+      };
+    }
+
+    return {
+      data: product,
+      success: true,
+      message: "Fuccessfully fetched product by Id",
+    };
+  } catch (error: any) {
+    return {
+      data: {} as ProductType,
+      success: false,
+      message: `Error decreasing product quantity: ${error.message}`,
     };
   }
 };
