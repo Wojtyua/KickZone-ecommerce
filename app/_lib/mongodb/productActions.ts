@@ -101,6 +101,25 @@ export const getProductByTargetGroup = async (
   }
 };
 
+export const getFeaturedProducts = async (): Promise<GetProductResult> => {
+  try {
+    const products: ProductType[] = await Product.find({
+      featured: true,
+    });
+    return {
+      data: products,
+      success: true,
+      message: `Featured products fetched successfully`,
+    };
+  } catch (error: any) {
+    return {
+      data: [],
+      success: false,
+      message: `Error fetching featured products: ${error.message}`,
+    };
+  }
+};
+
 export const decreaseProductQuantity = async (
   productId: string,
   variantSize: number,

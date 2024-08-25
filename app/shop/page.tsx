@@ -1,19 +1,17 @@
-import {
-  getAllProducts,
-  getProductByTargetGroup,
-} from "@/app/_lib/mongodb/productActions";
+import { getFeaturedProducts } from "@/app/_lib/mongodb/productActions";
 import Image from "next/image";
 
-// export const metadata = {
-//   title: "Shop now",
-// };
+export const metadata = {
+  title: "Shop now",
+};
 
 const Page = async () => {
-  const { data: products } = await getAllProducts();
+  const { data: products, message, success } = await getFeaturedProducts();
 
   return (
     <div>
-      <h1>all prods</h1>
+      <h1 className="text-2xl">Featured Products</h1>
+      <p>our most popular sneakers 🤓 very cool 👍</p>
       {products.map((product) => (
         <div key={product.product_model}>
           <Image
