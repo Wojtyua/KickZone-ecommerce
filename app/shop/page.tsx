@@ -1,8 +1,8 @@
 import {
   getAllProducts,
   getProductByTargetGroup,
-  decreaseProductQuantity,
 } from "@/app/_lib/mongodb/productActions";
+import Image from "next/image";
 
 // export const metadata = {
 //   title: "Shop now",
@@ -10,23 +10,20 @@ import {
 
 const Page = async () => {
   const { data: products } = await getAllProducts();
-  const { data: mensProducts } = await getProductByTargetGroup("men");
-  const { data: womensProducts } = await getProductByTargetGroup("women");
-  await decreaseProductQuantity("66ca26fd5ab076a5e9c63945", 39, 10);
 
   return (
     <div>
       <h1>all prods</h1>
       {products.map((product) => (
-        <p key={product.product_model}>{product.product_model}</p>
-      ))}
-      <h2>mens prods</h2>
-      {mensProducts.map((product) => (
-        <p key={product.product_model}>{product.product_model}</p>
-      ))}
-      <h2>womens prods</h2>
-      {womensProducts.map((product) => (
-        <p key={product.product_model}>{product.product_model}</p>
+        <div key={product.product_model}>
+          <Image
+            src={product.images[0]}
+            width={200}
+            height={200}
+            alt={product.product_model}
+          />
+          <p>{product.product_model}</p>
+        </div>
       ))}
     </div>
   );

@@ -4,9 +4,28 @@ import { revalidatePath } from "next/cache";
 import { connectToMongoDB } from "@/app/_lib/mongodb/db";
 import { ProductType } from "@/app/_lib/mongodb/db.types";
 import { Types } from "mongoose";
+import { shoesData } from "@/data";
 
 type ProductResult = { success: boolean; message: string };
 type GetProductResult = ProductResult & { data: ProductType[] };
+
+export async function addShoesToDatabase() {
+  try {
+    // Połączenie z MongoDB
+    await connectToMongoDB();
+
+    // Iteracja po każdym elemencie w danych butów i dodanie ich do bazy danych
+    for (const shoe of shoesData) {
+      const newProduct = new Product(shoe);
+      await newProduct.save();
+      console.log(`Product added: ${newProduct.product_model}`);
+    }
+
+    console.log("All products have been added successfully.");
+  } catch (error) {
+    console.error("Error adding products to database:", error);
+  }
+}
 
 // this needs use client to work
 export const createProduct = async (
@@ -86,7 +105,7 @@ export const decreaseProductQuantity = async (
   productId: string,
   variantSize: number,
   amount: number
-): Promise<{ success: boolean; message: string }> => {
+): Promise<ProductResult> => {
   try {
     if (amount <= 0) {
       return { success: false, message: "Amount must be greater than 0" };
