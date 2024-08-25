@@ -14,10 +14,9 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const { data, success, message } = await getAllProducts();
+  const { data } = await getAllProducts();
   const ids = data.map((product) => ({ product_id: String(product._id) }));
 
-  console.log(ids);
   return ids;
 }
 

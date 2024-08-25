@@ -1,5 +1,6 @@
 import { getFeaturedProducts } from "@/app/_lib/mongodb/productActions";
 import Image from "next/image";
+import Link from "next/link";
 
 const FeaturedProductsList = async () => {
   const { data: products, message, success } = await getFeaturedProducts();
@@ -13,7 +14,7 @@ const FeaturedProductsList = async () => {
             height={200}
             alt={product.product_model}
           />
-          <p>{product.product_model}</p>
+          <Link href={`shop/${product._id}`}>{product.product_model}</Link>
         </div>
       ))}
     </div>
