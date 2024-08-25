@@ -65,6 +65,7 @@ export const createProduct = async (
 
 // use client not necessary(only if you want this on click)
 export const getAllProducts = async (): Promise<GetProductResult> => {
+  await connectToMongoDB();
   try {
     const products: ProductType[] = await Product.find();
     return {
@@ -84,6 +85,7 @@ export const getAllProducts = async (): Promise<GetProductResult> => {
 export const getProductByTargetGroup = async (
   targetGroup: "men" | "women"
 ): Promise<GetProductResult> => {
+  await connectToMongoDB();
   try {
     const products: ProductType[] = await Product.find({
       target_group: targetGroup,
@@ -103,6 +105,7 @@ export const getProductByTargetGroup = async (
 };
 
 export const getFeaturedProducts = async (): Promise<GetProductResult> => {
+  await connectToMongoDB();
   try {
     const products: ProductType[] = await Product.find({
       featured: true,
@@ -124,6 +127,7 @@ export const getFeaturedProducts = async (): Promise<GetProductResult> => {
 export const getProductById = async (
   productId: string
 ): Promise<GetProductByIdResult> => {
+  await connectToMongoDB();
   try {
     const product: ProductType | null = await Product.findById(productId);
 
@@ -154,6 +158,7 @@ export const decreaseProductQuantity = async (
   variantSize: number,
   amount: number
 ): Promise<ProductResult> => {
+  await connectToMongoDB();
   try {
     if (amount <= 0) {
       return { success: false, message: "Amount must be greater than 0" };
