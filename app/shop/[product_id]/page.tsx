@@ -23,23 +23,13 @@ export async function generateStaticParams() {
 
 const Page = async ({ params }: { params: { product_id: string } }) => {
   const { data, message, success } = await getProductById(params.product_id);
-  // const {
-  //   _id,
-  //   product_model,
-  //   price,
-  //   variants,
-  //   description,
-  //   images,
-  //   target_group,
-  //   categories,
-  // } = data;
-  const data2 = JSON.parse(JSON.stringify(data));
+  const formattedData = JSON.parse(JSON.stringify(data));
 
   if (!success) return <div>Error: {message}</div>;
 
   return (
     <div>
-      <ProductDetail data={data2} />
+      <ProductDetail data={formattedData} />
     </div>
   );
 };
