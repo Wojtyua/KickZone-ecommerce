@@ -24,19 +24,12 @@ export function filterProducts(
       ? searchParams.category.split(",")
       : undefined;
 
-    const size = Array.isArray(searchParams.size)
-      ? searchParams.size
-      : typeof searchParams.size === "string"
-      ? searchParams.size.split(",")
-      : undefined;
-
     const minPrice = searchParams.minPrice?.toString();
     const maxPrice = searchParams.maxPrice?.toString();
 
     console.log("Parsed filters:", {
       brands,
       categories,
-      size,
       minPrice,
       maxPrice,
     });
@@ -77,14 +70,6 @@ export function filterProducts(
 
       if (!categoryMatch) {
         console.log("Filtered out by category");
-        return false;
-      }
-    }
-
-    if (size) {
-      const sizeNum = size.map((size) => parseInt(size));
-      if (!product.variants.some((variant) => sizeNum.includes(variant.size))) {
-        console.log("Filtered out by size");
         return false;
       }
     }
