@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { ProductType } from "@/app/_lib/mongodb/db.types";
 import { useCartStore } from "@/app/_store";
+import usePersistStore from "@/app/_store/helper";
 
 type ProductDetailProps = {
   data: ProductType;
@@ -14,6 +15,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
 }) => {
   const [selectedSize, setSelectedSize] = useState<number | null>(null);
   const { addItem } = useCartStore();
+  const store = usePersistStore(useCartStore, (state) => state.items);
+  console.log(store);
 
   const handleSizeChange = (size: number) => {
     setSelectedSize(size);
