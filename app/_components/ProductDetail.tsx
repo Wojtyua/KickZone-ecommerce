@@ -3,15 +3,17 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ProductType } from "@/app/_lib/mongodb/db.types";
+import { useCartStore } from "@/app/_store";
 
 type ProductDetailProps = {
   data: ProductType;
 };
 
 const ProductDetail: React.FC<ProductDetailProps> = ({
-  data: { product_model, description, price, images, variants },
+  data: { _id, product_model, description, price, images, variants },
 }) => {
   const [selectedSize, setSelectedSize] = useState<number | null>(null);
+  const { addItem } = useCartStore();
 
   const handleSizeChange = (size: number) => {
     setSelectedSize(size);
@@ -19,7 +21,14 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
 
   const handleAddToCart = () => {
     if (selectedSize) {
-      console.log(`Added ${product_model} to cart in size ${selectedSize}`);
+      addItem({
+        id: _id,
+        model: product_model,
+        price,
+        size: selectedSize,
+        imageUrl: images[0],
+        quantity: 1,
+      });
     }
   };
 
