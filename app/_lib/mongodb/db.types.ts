@@ -1,9 +1,9 @@
 export type ProductType = {
-  _id?: string;
+  _id: string;
   product_model: string;
   brand: string;
   price: number;
-  description?: string;
+  description: string;
   featured: boolean;
   target_group: string;
   categories: string[]; // Tablica stringów dla kategorii

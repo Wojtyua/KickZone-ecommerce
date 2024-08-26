@@ -1,6 +1,8 @@
 import FeaturedProductsList from "@/app/_components/FeaturedProductsList";
 import { Suspense } from "react";
 
+export const revalidate = 3600;
+
 export const metadata = {
   title: "Shop now",
 };

@@ -1,4 +1,5 @@
-import ProductByIdError from "@/app/_components/ProductByIdError";
+import ProductDetail from "@/app/_components/ProductDetail";
+import { ProductType } from "@/app/_lib/mongodb/db.types";
 import {
   getAllProducts,
   getProductById,
@@ -22,15 +23,23 @@ export async function generateStaticParams() {
 
 const Page = async ({ params }: { params: { product_id: string } }) => {
   const { data, message, success } = await getProductById(params.product_id);
+  // const {
+  //   _id,
+  //   product_model,
+  //   price,
+  //   variants,
+  //   description,
+  //   images,
+  //   target_group,
+  //   categories,
+  // } = data;
+  const data2 = JSON.parse(JSON.stringify(data));
 
-  if (!success) return <ProductByIdError message={message} />;
+  if (!success) return <div>Error: {message}</div>;
+
   return (
     <div>
-      <span>{message}</span>
-      <p>{String(data._id)}</p>
-      <h1>{data.product_model}</h1>
-      <p>{data.description}</p>
-      <p>{data.price}</p>
+      <ProductDetail data={data2} />
     </div>
   );
 };
