@@ -1,89 +1,68 @@
-"use client";
-import { FormEvent, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { registerUser } from "@/app/_actions/userActions";
 
-const Page = () => {
-  const [error, setError] = useState<string>();
-  const router = useRouter();
-  const ref = useRef<HTMLFormElement>(null);
-
-  const handleSubmit = async (formData: FormData) => {
-    const r = await registerUser({
-      email: formData.get("email"),
-      password: formData.get("password"),
-      firstName: formData.get("firstName"),
-      lastName: formData.get("lastName"),
-    });
-    ref.current?.reset();
-    if (r?.msg) {
-      setError(r.msg);
-      return;
-    } else {
-      return router.push("/login");
-    }
-  };
+const Register = () => {
   return (
-    <section className="w-full h-screen flex items-center justify-center">
-      <form
-        ref={ref}
-        action={handleSubmit}
-        className="p-6 w-full max-w-[400px] flex flex-col justify-between items-center gap-2 
-        border border-solid border-black bg-white rounded"
-      >
-        {error && <div className="">{error}</div>}
-        <h1 className="mb-5 w-full text-2xl font-bold">Register</h1>
+    <div className="mt-10 max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white border border-[#121212]  dark:bg-black">
+      <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
+        Welcome to MyShop
+      </h2>
+      <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
+        Please provide all the necessary information
+      </p>
 
-        <label className="w-full text-sm">First Name</label>
-        <input
-          type="text"
-          placeholder="Full Name"
-          className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded text-[13px]"
-          name="firstName"
-        />
-        <label className="w-full text-sm">Last Name</label>
-        <input
-          type="text"
-          placeholder="Full Name"
-          className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded text-[13px]"
-          name="lastName"
-        />
+      <form className="my-8">
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          <div className="flex flex-col">
+            <Label htmlFor="firstname" className="mb-2">
+              First Name
+            </Label>
+            <Input
+              id="firstname"
+              placeholder="Tyler"
+              type="text"
+              name="firstname"
+            />
+          </div>
+          <div className="flex flex-col">
+            <Label htmlFor="lastname" className="mb-2">
+              Last Name
+            </Label>
+            <Input
+              id="lastname"
+              placeholder="Durden"
+              type="text"
+              name="lastname"
+            />
+          </div>
+        </div>
 
-        <label className="w-full text-sm">Email</label>
-        <input
+        <Label htmlFor="email">Email Address</Label>
+        <Input
+          id="email"
+          placeholder="projectmayhem@fc.com"
           type="email"
-          placeholder="Email"
-          className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded"
           name="email"
         />
 
-        <label className="w-full text-sm">Password</label>
-        <div className="flex w-full">
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded"
-            name="password"
-          />
-        </div>
+        <Label htmlFor="password">Password</Label>
+        <Input
+          id="password"
+          placeholder="***********"
+          type="password"
+          name="password"
+          className="mb-5"
+        />
 
-        <button
-          className="w-full border border-solid border-black py-1.5 mt-2.5 rounded
-        transition duration-150 ease hover:bg-black"
-        >
-          Sign up
-        </button>
+        <Button className="w-full">Sign up &rarr;</Button>
 
-        <Link
-          href="/login"
-          className="text-sm text-[#888] transition duration-150 ease hover:text-black"
-        >
-          Already have an account?
-        </Link>
+        <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
+          Already have an account? <Link href="/login">Login</Link>
+        </p>
       </form>
-    </section>
+    </div>
   );
 };
-
-export default Page;
+export default Register;
