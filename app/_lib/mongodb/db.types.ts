@@ -13,3 +13,12 @@ export type ProductType = {
     quantity: number;
   }[]; // Tablica obiektów dla wariantów
 };
+
+export type UserType = {
+  _id: string;
+  email: string;
+  password: string;
+  name: string;
+  phone: string;
+  image: string;
+}

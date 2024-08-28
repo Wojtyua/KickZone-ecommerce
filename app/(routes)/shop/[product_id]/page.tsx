@@ -1,9 +1,6 @@
 import ProductDetail from "@/app/_components/ProductDetail";
 import { ProductType } from "@/app/_lib/mongodb/db.types";
-import {
-  getAllProducts,
-  getProductById,
-} from "@/app/_lib/mongodb/productActions";
+import { getAllProducts, getProductById } from "@/app/_actions/productActions";
 
 export async function generateMetadata({
   params,

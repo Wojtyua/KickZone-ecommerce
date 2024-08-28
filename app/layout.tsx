@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans_Tai_Le } from "next/font/google";
+
 import "./globals.css";
 
 import { connectToMongoDB } from "@/app/_lib/mongodb/db";

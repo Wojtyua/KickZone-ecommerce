@@ -1,4 +1,4 @@
-import { getFeaturedProducts } from "@/app/_lib/mongodb/productActions";
+import { getFeaturedProducts } from "@/app/_actions/productActions";
 import Image from "next/image";
 import Link from "next/link";
 

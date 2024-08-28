@@ -1,4 +1,4 @@
-import { getProductByTargetGroup } from "@/app/_lib/mongodb/productActions";
+import { getProductByTargetGroup } from "@/app/_actions/productActions";
 import { filterProducts } from "@/app/_utils/filterProducts";
 import Image from "next/image";
 import Link from "next/link";
