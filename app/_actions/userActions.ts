@@ -1,46 +1,33 @@
 "use server";
 import { connectToMongoDB } from "@/app/_lib/mongodb/db";
-import { UserType } from "@/app/_lib/mongodb/db.types";
 import User from "@/app/_lib/mongodb/models/userModel";
-import bcrypt from "bcryptjs";
+import { hashPassword } from "@/app/_utils/passUtils";
 
-export const registerUser = async (values: any) => {
-  const { email, password, firstName, lastName } = values;
-  try {
-    await connectToMongoDB();
-    // Check if the user already exists
-    const userFound = await User.findOne({ email });
-    if (userFound) {
-      return {
-        satisfies: false,
-        msg: "Email already exists",
-      };
-    }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({
-      firstName,
-      lastName,
-      email,
-      password: hashedPassword,
-    });
+import { redirect } from "next/navigation";
 
-    await user.save();
-    return {
-      satisfies: true,
-      msg: "User registered successfully",
-    };
-  } catch (e) {
-    console.log(e);
+export const registerUser = async (formData: FormData) => {
+  const firstName = formData.get("firstName") as string;
+  const lastName = formData.get("lastName") as string;
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  if (!firstName || !lastName || !email || !password) {
+    throw new Error("Please provide all the necessary information");
   }
-};
 
-export const getUser = async (email: string): Promise<UserType> => {
   await connectToMongoDB();
-  const user: UserType | null = await User.findOne({ email });
+  const user = await User.findOne({ email });
 
-  if (!user) {
-    throw new Error("User not found");
-  }
+  if (user) throw new Error("User already exists");
 
-  return user;
+  const hashedPassword = await hashPassword(password);
+  const newUser = new User({
+    firstName,
+    lastName,
+    email,
+    password: hashedPassword,
+  });
+
+  await User.create(newUser);
+  console.log("User registered successfully");
+  redirect("/login");
 };

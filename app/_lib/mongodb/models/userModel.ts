@@ -27,7 +27,7 @@ const UserSchema = new Schema<UserDocument>(
         "Email is invalid",
       ],
     },
-    password: { type: String, required: true },
+    password: { type: String, required: true, select: false },
     firstName: { type: String, required: [true, "First name is required"] },
     lastName: { type: String, required: [true, "Last name is required"] },
     favorites: [{ type: String, required: false }],

@@ -1,3 +1,4 @@
+import { registerUser } from "@/app/_actions/userActions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,28 +14,28 @@ const Register = () => {
         Please provide all the necessary information
       </p>
 
-      <form className="my-8">
+      <form className="my-8" action={registerUser}>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <div className="flex flex-col">
-            <Label htmlFor="firstname" className="mb-2">
+            <Label htmlFor="firstName" className="mb-2">
               First Name
             </Label>
             <Input
-              id="firstname"
+              id="firstName"
               placeholder="Tyler"
               type="text"
-              name="firstname"
+              name="firstName"
             />
           </div>
           <div className="flex flex-col">
-            <Label htmlFor="lastname" className="mb-2">
+            <Label htmlFor="lastName" className="mb-2">
               Last Name
             </Label>
             <Input
-              id="lastname"
+              id="lastName"
               placeholder="Durden"
               type="text"
-              name="lastname"
+              name="lastName"
             />
           </div>
         </div>
