@@ -2,6 +2,8 @@
 import { connectToMongoDB } from "@/app/_lib/mongodb/db";
 import User from "@/app/_lib/mongodb/models/userModel";
 import { hashPassword } from "@/app/_utils/passUtils";
+import { signIn } from "@/auth";
+import { CredentialsSignin } from "next-auth";
 
 import { redirect } from "next/navigation";
 
@@ -30,4 +32,22 @@ export const registerUser = async (formData: FormData) => {
   await User.create(newUser);
   console.log("User registered successfully");
   redirect("/login");
+};
+
+export const loginUser = async (formData: FormData) => {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+
+  try {
+    await signIn("credentials", {
+      redirect: false,
+      callbackUrl: "/",
+      email,
+      password,
+    });
+  } catch (error) {
+    const someError = error as CredentialsSignin;
+    return someError.cause;
+  }
+  redirect("/");
 };
