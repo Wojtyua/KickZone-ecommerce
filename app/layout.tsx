@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
-import { Noto_Sans_Tai_Le } from "next/font/google";
+import { Be_Vietnam_Pro } from "next/font/google";
 
 import "./globals.css";
 
 import { connectToMongoDB } from "@/app/_lib/mongodb/db";
-import Header from "@/app/_components/Header";
+import Header from "@/app/_components/header/Header";
 
-const noto = Noto_Sans_Tai_Le({
+const font = Be_Vietnam_Pro({
+  weight: ["400", "500", "600", "700", "800", "900"],
+  style: ["normal"],
   subsets: ["latin"],
   display: "swap",
-  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -30,11 +31,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`relative bg-background text-text min-h-screen flex flex-col ${noto.className}`}
+        className={`relative bg-background text-text-100 min-h-screen flex flex-col ${font.className}`}
       >
-        <Header />
-        <div className="flex-1 px-8 py-12 grid">
-          <main className="max-w-7xl mx-auto w-full">{children}</main>
+        <div className="max-w-screen-2xl mx-auto w-full p-2">
+          <Header />
+          <div className="flex-1 pt-16 grid">
+            <main>{children}</main>
+          </div>
         </div>
       </body>
     </html>

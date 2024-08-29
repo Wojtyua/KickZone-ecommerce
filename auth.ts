@@ -25,6 +25,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         await connectToMongoDB();
 
         const user = await User.findOne({ email }).select("+password");
+        console.log("User podczas logowania", user);
 
         if (!user) throw new Error("User not found");
 
@@ -41,7 +42,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           favorites: user.favorites,
           orders: user.orders,
         };
-
+        console.log("UserData podczas logowania", userData);
         return userData;
       },
     }),

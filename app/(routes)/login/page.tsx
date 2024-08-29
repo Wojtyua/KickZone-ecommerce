@@ -1,38 +1,59 @@
 import { loginUser } from "@/app/_actions/userActions";
+import { auth } from "@/auth";
+
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-const Login = () => {
+const Login = async () => {
+  const session = await auth();
+  // if (session) redirect("/");
+  console.log(session?.user);
   return (
-    <div className="mt-10 max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white border border-[#121212]  dark:bg-black">
-      <form className="my-8" action={loginUser}>
-        <Label htmlFor="email">Email Address</Label>
-        <Input
-          id="email"
-          placeholder="projectmayhem@fc.com"
-          type="email"
-          name="email"
-        />
+    <Card>
+      <CardHeader>
+        <CardTitle>Card Title</CardTitle>
+        <CardDescription>Card Description</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form action={loginUser}>
+          <Label htmlFor="email">Email Address</Label>
+          <Input
+            id="email"
+            placeholder="projectmayhem@fc.com"
+            type="email"
+            name="email"
+          />
 
-        <Label htmlFor="email">Password</Label>
-        <Input
-          id="password"
-          placeholder="*************"
-          type="password"
-          name="password"
-          className="mb-6"
-        />
+          <Label htmlFor="email">Password</Label>
+          <Input
+            id="password"
+            placeholder="*************"
+            type="password"
+            name="password"
+            className="mb-6"
+          />
 
-        <Button className="w-full">Login &rarr;</Button>
-
-        <p className="text-center text-neutral-600 text-sm max-w-sm mt-4 dark:text-neutral-300">
+          <Button>Login &rarr;</Button>
+        </form>
+      </CardContent>
+      <CardFooter>
+        <p>
           Don&apos;t have account? <Link href="/register">Register</Link>
         </p>
-      </form>
-    </div>
+      </CardFooter>
+    </Card>
   );
 };
 

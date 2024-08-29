@@ -1,5 +1,10 @@
+import Link from "next/link";
 const Logo = () => {
-  return <span className="text-xl text-primary font-bold">KickZone</span>;
+  return (
+    <Link href="/">
+      <span className="text-3xl font-extrabold uppercase">KickZone</span>
+    </Link>
+  );
 };
 
 export default Logo;

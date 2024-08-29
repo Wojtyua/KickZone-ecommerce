@@ -8,7 +8,7 @@ const Page = async (searchParamsWrapper: {
 
   return (
     <div>
-      <h2>Mens shoes</h2>
+      <h2 className="text-3xl font-semibold uppercase mb-4">Mens shoes</h2>
       <Suspense fallback={<div>Loading mens products...</div>}>
         <ProductsList target="men" searchParams={searchParams} />
       </Suspense>

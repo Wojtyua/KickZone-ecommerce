@@ -1,22 +1,23 @@
 import mongoose, { Schema, model, Document } from "mongoose";
 
-type UserType = {
-  _id: string;
+type FavoriteType = {
+  productId: string;
+};
+
+type OrderType = {
+  orderId: string;
+};
+
+export interface UserType extends Document {
   email: string;
   password: string;
   firstName: string;
   lastName: string;
-  favorites: {
-    productId: string;
-  }[];
-  orders: {
-    orderId: string;
-  }[];
-};
+  favorites: FavoriteType[];
+  orders: OrderType[];
+}
 
-type UserDocument = UserType & Document;
-
-const UserSchema = new Schema<UserDocument>(
+const UserSchema = new Schema<UserType>(
   {
     email: {
       type: String,
@@ -30,11 +31,11 @@ const UserSchema = new Schema<UserDocument>(
     password: { type: String, required: true, select: false },
     firstName: { type: String, required: [true, "First name is required"] },
     lastName: { type: String, required: [true, "Last name is required"] },
-    favorites: [{ type: String, required: false }],
-    orders: [{ type: String, required: false }],
+    favorites: [{ productId: { type: String } }],
+    orders: [{ orderId: { type: String } }],
   },
   { timestamps: true }
 );
 
-const User = mongoose.models?.User || model<UserDocument>("User", UserSchema);
+const User = mongoose.models?.User || model<UserType>("User", UserSchema);
 export default User;
