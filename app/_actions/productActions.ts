@@ -86,6 +86,9 @@ export const getProductByTargetGroup = async (
   targetGroup: "men" | "women"
 ): Promise<GetProductResult> => {
   await connectToMongoDB();
+
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
   try {
     const products: ProductType[] = await Product.find({
       target_group: targetGroup,

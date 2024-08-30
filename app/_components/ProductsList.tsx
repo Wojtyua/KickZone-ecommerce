@@ -1,27 +1,22 @@
-import { getProductByTargetGroup } from "@/app/_actions/productActions";
 import ProductCard from "@/app/_components/ProductCard";
 import { filterProducts } from "@/app/_utils/filterProducts";
+import { ProductType } from "@/app/_lib/mongodb/db.types";
 
 type ProductsListProps = {
-  target: "men" | "women";
   searchParams: { [key: string]: string | string[] | undefined };
+  products: ProductType[];
 };
 
-const ProductsList = async ({ target, searchParams }: ProductsListProps) => {
-  // Pobierz produkty na podstawie targetu
-  const { data: products } = await getProductByTargetGroup(target);
-
-  // Przefiltruj produkty na podstawie searchParams
+const ProductsList = ({ searchParams, products }: ProductsListProps) => {
   const filteredProducts = filterProducts(products, { searchParams });
 
-  // Jeśli brak wyników, wyświetl wiadomość
   if (filteredProducts.length === 0) {
     return <p>No products found matching your criteria.</p>;
   }
 
   return (
     <main className="grid grid-cols-2 gap-6 md:grid-cols-3">
-      {filteredProducts.map((product) => (
+      {filteredProducts.map((product: ProductType) => (
         <ProductCard key={product._id} product={product} />
       ))}
     </main>
