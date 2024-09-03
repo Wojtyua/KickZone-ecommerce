@@ -16,16 +16,14 @@ const Navigation = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex text-text-200">
-      <ul className="flex gap-12 font-medium text-lg uppercase items-center hover:text-text-100">
+    <nav className="flex">
+      <ul className="flex gap-12 font-medium text-lg uppercase items-center">
         {links.map((link) => (
           <li key={link.href}>
             <Link href={link.href}>
               <span
                 className={`${
-                  pathname === link.href
-                    ? "underline underline-offset-4 text-text-100"
-                    : ""
+                  pathname === link.href ? "underline underline-offset-4" : ""
                 }`}
               >
                 {link.label}

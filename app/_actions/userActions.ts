@@ -1,53 +1,62 @@
+// app/_actions/userActions.ts
+
 "use server";
+
 import { connectToMongoDB } from "@/app/_lib/mongodb/db";
 import User from "@/app/_lib/mongodb/models/userModel";
-import { hashPassword } from "@/app/_utils/passUtils";
+import bcrypt from "bcryptjs";
 import { signIn } from "@/auth";
-import { CredentialsSignin } from "next-auth";
 
-import { redirect } from "next/navigation";
-
-export const registerUser = async (formData: FormData) => {
-  const firstName = formData.get("firstName") as string;
-  const lastName = formData.get("lastName") as string;
+export async function registerUser(formData: FormData) {
+  const name = formData.get("name") as string;
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
-  if (!firstName || !lastName || !email || !password) {
-    throw new Error("Please provide all the necessary information");
+
+  if (!name || !email || !password) {
+    return { error: "Please provide all the necessary information" };
   }
 
-  await connectToMongoDB();
-  const user = await User.findOne({ email });
+  try {
+    await connectToMongoDB();
+    const existingUser = await User.findOne({ email });
 
-  if (user) throw new Error("User already exists");
+    if (existingUser) {
+      return { error: "User already exists" };
+    }
 
-  const hashedPassword = await hashPassword(password);
-  const newUser = new User({
-    firstName,
-    lastName,
-    email,
-    password: hashedPassword,
-  });
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const newUser = new User({
+      name,
+      email,
+      password: hashedPassword,
+    });
 
-  await User.create(newUser);
-  console.log("User registered successfully");
-  redirect("/login");
-};
+    await User.create(newUser);
+    return { success: "User registered successfully" };
+  } catch (error) {
+    console.error("Registration error:", error);
+    return { error: "An unexpected error occurred during registration" };
+  }
+}
 
-export const loginUser = async (formData: FormData) => {
+export async function loginUser(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
   try {
-    await signIn("credentials", {
+    const result = await signIn("credentials", {
       redirect: false,
-      callbackUrl: "/",
       email,
       password,
     });
+
+    if (result?.error) {
+      return { error: result.error };
+    }
+
+    return { success: true };
   } catch (error) {
-    const someError = error as CredentialsSignin;
-    return someError.cause;
+    console.error("Login error:", error);
+    return { error: "An unexpected error occurred" };
   }
-  redirect("/");
-};
+}

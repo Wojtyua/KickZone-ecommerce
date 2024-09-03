@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Be_Vietnam_Pro } from "next/font/google";
-
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
 import "./globals.css";
 
 import { connectToMongoDB } from "@/app/_lib/mongodb/db";
@@ -22,23 +23,25 @@ export const metadata: Metadata = {
     "Discover the latest sneakers at KickZone, your go-to online store for top brands like Nike, Adidas, Puma, and more. Shop a wide range of men's and women's sneakers, including limited editions and the hottest streetwear trends. Enjoy a seamless shopping experience with free shipping and easy returns. Stay ahead in style with KickZone.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  connectToMongoDB();
+  const session = await auth();
   return (
     <html lang="en">
       <body
         className={`relative bg-background text-text-100 min-h-screen flex flex-col  ${font.className}`}
       >
-        <div className="max-w-screen-2xl mx-auto w-full p-2">
-          <Header />
-          <div className="flex-1 pt-16 grid">
-            <main>{children}</main>
+        <SessionProvider session={session}>
+          <div className="max-w-screen-2xl mx-auto w-full p-2">
+            <Header />
+            <div className="flex-1 pt-16 grid">
+              <main>{children}</main>
+            </div>
           </div>
-        </div>
+        </SessionProvider>
       </body>
     </html>
   );

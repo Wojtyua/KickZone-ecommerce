@@ -1,53 +1,67 @@
+// app/auth.ts
+import NextAuth from "next-auth";
+import type { NextAuthConfig } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToMongoDB } from "@/app/_lib/mongodb/db";
 import User from "@/app/_lib/mongodb/models/userModel";
-import NextAuth, { CredentialsSignin } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const authConfig: NextAuthConfig = {
   providers: [
-    Credentials({
+    CredentialsProvider({
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      authorize: async (credentials) => {
-        const email = credentials.email as string | undefined;
-        const password = credentials.password as string | undefined;
-
-        if (!email || !password) {
-          throw new CredentialsSignin(
-            "Please provide all the necessary information"
-          );
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          return null;
         }
 
         await connectToMongoDB();
 
-        const user = await User.findOne({ email }).select("+password");
-        console.log("User podczas logowania", user);
+        const user = await User.findOne({ email: credentials.email }).select(
+          "+password"
+        );
+        if (!user) return null;
 
-        if (!user) throw new Error("User not found");
+        const isPasswordCorrect = await bcrypt.compare(
+          credentials.password as string,
+          user.password
+        );
+        if (!isPasswordCorrect) return null;
 
-        if (!user.password) throw new Error("Invalid emaild or password");
-
-        const isValid = await bcrypt.compare(password, user.password);
-        if (!isValid) throw new Error("Password is incorrect");
-
-        const userData = {
-          id: user._id,
+        return {
+          id: user._id.toString(),
           email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          favorites: user.favorites,
-          orders: user.orders,
+          name: user.name,
         };
-        console.log("UserData podczas logowania", userData);
-        return userData;
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.name = user.name;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.email = token.email as string;
+        session.user.name = token.name as string;
+      }
+      return session;
+    },
+  },
   pages: {
     signIn: "/login",
   },
-});
+  session: { strategy: "jwt" },
+};
+
+export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);

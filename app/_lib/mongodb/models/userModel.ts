@@ -1,20 +1,11 @@
+// app/_lib/mongodb/models/userModel.ts
+
 import mongoose, { Schema, model, Document } from "mongoose";
-
-type FavoriteType = {
-  productId: string;
-};
-
-type OrderType = {
-  orderId: string;
-};
 
 export interface UserType extends Document {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  favorites: FavoriteType[];
-  orders: OrderType[];
+  name: string;
 }
 
 const UserSchema = new Schema<UserType>(
@@ -29,10 +20,7 @@ const UserSchema = new Schema<UserType>(
       ],
     },
     password: { type: String, required: true, select: false },
-    firstName: { type: String, required: [true, "First name is required"] },
-    lastName: { type: String, required: [true, "Last name is required"] },
-    favorites: [{ productId: { type: String } }],
-    orders: [{ orderId: { type: String } }],
+    name: { type: String, required: [true, "Name is required"] },
   },
   { timestamps: true }
 );

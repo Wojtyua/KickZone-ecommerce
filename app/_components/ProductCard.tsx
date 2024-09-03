@@ -11,14 +11,14 @@ type ProductCardProps = {
 
 const ProductCard = async ({ product }: ProductCardProps) => {
   return (
-    <Card className="bg-secondary-950 overflow-hidden">
+    <Card className="overflow-hidden">
       <CardContent>
         <Image
           src={product.images[0]}
           alt="{product.product_model} image"
-          className="w-auto h-auto object-cover mix-blend-darken hover:scale-105 transition-transform"
           width={300}
           height={300}
+          className="h-auto w-auto rounded-md object-cover"
           priority
         />
 

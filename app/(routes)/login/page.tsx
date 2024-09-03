@@ -1,6 +1,8 @@
-import { loginUser } from "@/app/_actions/userActions";
-import { auth } from "@/auth";
+"use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,31 +14,57 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
 import Link from "next/link";
-import { redirect } from "next/navigation";
+// import { loginUser } from "@/app/_actions/userActions";
 
-const Login = async () => {
-  const session = await auth();
-  // if (session) redirect("/");
-  console.log(session?.user);
+const Login = () => {
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError(null);
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    // await loginUser(formData);
+
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+
+      if (result?.error) {
+        setError(result.error);
+      } else {
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("An unexpected error occurred");
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardTitle>Login</CardTitle>
+        <CardDescription>Enter your credentials to log in</CardDescription>
       </CardHeader>
       <CardContent>
-        <form action={loginUser}>
+        <form onSubmit={handleSubmit}>
           <Label htmlFor="email">Email Address</Label>
           <Input
             id="email"
-            placeholder="projectmayhem@fc.com"
+            placeholder="example@example.com"
             type="email"
             name="email"
           />
 
-          <Label htmlFor="email">Password</Label>
+          <Label htmlFor="password">Password</Label>
           <Input
             id="password"
             placeholder="*************"
@@ -45,7 +73,9 @@ const Login = async () => {
             className="mb-6"
           />
 
-          <Button>Login &rarr;</Button>
+          {error && <p className="text-red-500 mb-4">{error}</p>}
+
+          <Button type="submit">Login &rarr;</Button>
         </form>
       </CardContent>
       <CardFooter>
