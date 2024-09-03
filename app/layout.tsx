@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`relative bg-background text-text-100 min-h-screen flex flex-col ${font.className}`}
+        className={`relative bg-background text-text-100 min-h-screen flex flex-col  ${font.className}`}
       >
         <div className="max-w-screen-2xl mx-auto w-full p-2">
           <Header />

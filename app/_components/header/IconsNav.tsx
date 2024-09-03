@@ -1,17 +1,28 @@
 import Link from "next/link";
-import { GoHeart } from "react-icons/go";
-import { LuShoppingBag } from "react-icons/lu";
-import { MdOutlineAccountCircle } from "react-icons/md";
+import { LuHeart } from "react-icons/lu";
+import { LuShoppingCart } from "react-icons/lu";
+import { LuUser2 } from "react-icons/lu";
 
 const userLinks = [
-  { href: "/favorites", label: <GoHeart size={28} /> },
-  { href: "/cart", label: <LuShoppingBag size={28} /> },
-  { href: "/account", label: <MdOutlineAccountCircle size={28} /> },
+  {
+    href: "/favorites",
+    label: <LuHeart size={24} className="text-text-200 hover:text-text-100" />,
+  },
+  {
+    href: "/account",
+    label: <LuUser2 size={24} className="text-text-200 hover:text-text-100" />,
+  },
+  {
+    href: "/cart",
+    label: (
+      <LuShoppingCart size={24} className="text-text-200 hover:text-text-100" />
+    ),
+  },
 ];
 
 const IconsNav = () => {
   return (
-    <ul className="flex gap-6 capitalize text-sm items-center">
+    <ul className="flex gap-8 capitalize text-sm items-center">
       {userLinks.map((link) => (
         <li key={link.href}>
           <Link href={link.href}>{link.label}</Link>

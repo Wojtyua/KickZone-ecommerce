@@ -2,6 +2,7 @@ import ProductsList from "@/app/_components/ProductsList";
 import FilterHandler from "@/app/(routes)/shop/(target_group)/_components/FilterHandler";
 import { getProductByTargetGroup } from "@/app/_actions/productActions";
 import { Suspense } from "react";
+import Spinner from "@/app/_components/Spinner";
 
 const Page = async ({
   searchParams,
@@ -18,15 +19,12 @@ const Page = async ({
   return (
     <div>
       <h2 className="text-3xl font-semibold uppercase mb-4">Mens shoes</h2>
-      <div className="grid grid-cols-[18rem_1fr]">
+      <div className="grid grid-cols-[18rem_1fr] gap-6">
         <FilterHandler
           initialFilters={searchParams}
           filterOptions={filterOptions}
         />
-        <Suspense
-          key={JSON.stringify(searchParams)}
-          fallback={<div>Loading products...</div>}
-        >
+        <Suspense key={JSON.stringify(searchParams)} fallback={<Spinner />}>
           <ProductsList searchParams={searchParams} products={products} />
         </Suspense>
       </div>
