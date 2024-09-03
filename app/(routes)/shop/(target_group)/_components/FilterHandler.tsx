@@ -101,13 +101,14 @@ const FilterHandler = ({
       <CardContent className="flex flex-col gap-3">
         <div>
           <Label>Brands</Label>
-          <div className="flex space-x-1 flex-wrap border rounded-lg justify-evenly p-2">
+          <div className="flex gap-1 flex-wrap rounded-lg py-2">
             {filterOptions.brands.map((brand) => (
               <Toggle
                 key={brand}
                 pressed={filters.brand.includes(brand)}
                 onPressedChange={() => toggleFilter("brand", brand)}
                 size="xs"
+                variant="outline"
               >
                 {brand}
               </Toggle>
@@ -116,13 +117,14 @@ const FilterHandler = ({
         </div>
         <div>
           <Label>Categories</Label>
-          <div className="flex space-x-1 flex-wrap border rounded-lg justify-evenly p-2">
+          <div className="flex flex-wrap gap-1 rounded-lg py-2">
             {filterOptions.categories.map((category) => (
               <Toggle
                 key={category}
                 pressed={filters.category.includes(category)}
                 onPressedChange={() => toggleFilter("category", category)}
                 size="xs"
+                variant="outline"
               >
                 {category}
               </Toggle>
