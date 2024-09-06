@@ -1,62 +1,39 @@
-// app/_actions/userActions.ts
-
 "use server";
 
 import { connectToMongoDB } from "@/app/_lib/mongodb/db";
 import User from "@/app/_lib/mongodb/models/userModel";
 import bcrypt from "bcryptjs";
-import { signIn } from "@/auth";
+import { signIn } from "@/auth"; // Importuj signIn z twojego pliku auth.ts
 
-export async function registerUser(formData: FormData) {
-  const name = formData.get("name") as string;
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-
-  if (!name || !email || !password) {
-    return { error: "Please provide all the necessary information" };
-  }
-
+export async function registerUser(data: {
+  name: string;
+  email: string;
+  password: string;
+}) {
   try {
     await connectToMongoDB();
-    const existingUser = await User.findOne({ email });
 
+    // Check if user already exists
+    const existingUser = await User.findOne({ email: data.email });
     if (existingUser) {
       return { error: "User already exists" };
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+    // Hash password
+    const hashedPassword = await bcrypt.hash(data.password, 12);
+
+    // Create new user
     const newUser = new User({
-      name,
-      email,
+      name: data.name,
+      email: data.email,
       password: hashedPassword,
     });
 
-    await User.create(newUser);
-    return { success: "User registered successfully" };
-  } catch (error) {
-    console.error("Registration error:", error);
-    return { error: "An unexpected error occurred during registration" };
-  }
-}
-
-export async function loginUser(formData: FormData) {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-
-  try {
-    const result = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    });
-
-    if (result?.error) {
-      return { error: result.error };
-    }
+    await newUser.save();
 
     return { success: true };
   } catch (error) {
-    console.error("Login error:", error);
+    console.error("Registration error:", error);
     return { error: "An unexpected error occurred" };
   }
 }
