@@ -16,7 +16,7 @@ const Navigation = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex">
+    <nav className="hidden md:flex">
       <ul className="flex gap-12 font-medium text-lg uppercase items-center">
         {links.map((link) => (
           <li key={link.href}>

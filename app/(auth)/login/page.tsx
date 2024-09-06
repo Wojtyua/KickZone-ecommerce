@@ -59,15 +59,20 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        throw new Error(result.error || "Login failed");
+        // Handle different error scenarios
+        switch (result.error) {
+          case "CredentialsSignin":
+            setError("Invalid email or password. Please try again.");
+            break;
+          default:
+            setError("An error occurred during login. Please try again.");
+        }
+      } else {
+        router.push("/");
+        router.refresh();
       }
-
-      router.push("/");
-      router.refresh();
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "An unexpected error occurred"
-      );
+      setError("An unexpected error occurred. Please try again later.");
     } finally {
       setIsLoading(false);
     }

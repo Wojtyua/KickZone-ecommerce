@@ -5,7 +5,7 @@ import Nav from "./Nav";
 const Header = () => {
   return (
     <header>
-      <div className="p-6 flex justify-between">
+      <div className="p-6 flex justify-between align-middle">
         <Logo />
         <Nav />
         <IconsNav />

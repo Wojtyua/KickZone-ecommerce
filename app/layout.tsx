@@ -6,6 +6,7 @@ import "./globals.css";
 
 import { connectToMongoDB } from "@/app/_lib/mongodb/db";
 import Header from "@/app/_components/header/Header";
+import Footer from "@/app/_components/Footer";
 
 const font = Be_Vietnam_Pro({
   weight: ["400", "500", "600", "700", "800", "900"],
@@ -37,11 +38,12 @@ export default async function RootLayout({
         <SessionProvider session={session}>
           <div className="max-w-screen-2xl mx-auto w-full p-2">
             <Header />
-            <div className="flex-1 pt-16 grid">
+            <div className="flex-1 grid">
               <main>{children}</main>
             </div>
           </div>
         </SessionProvider>
+        <Footer />
       </body>
     </html>
   );

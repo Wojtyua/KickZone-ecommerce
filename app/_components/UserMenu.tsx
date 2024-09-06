@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import { LuUser2 } from "react-icons/lu";
+import { UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -28,7 +28,7 @@ const UserMenu = () => {
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="p-0">
-          <LuUser2 size={24} />
+          <UserRound size={24} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

@@ -1,13 +1,14 @@
 import Link from "next/link";
-import { LuHeart, LuShoppingCart } from "react-icons/lu";
+import { Heart, ShoppingCart } from "lucide-react";
 import UserMenu from "@/app/_components/UserMenu";
+import MobileNav from "@/app/_components/header/MobileNav";
 
 const IconsNav = () => {
   return (
     <ul className="flex gap-8 capitalize text-sm items-center">
       <li>
         <Link href="/favorites">
-          <LuHeart size={24} />
+          <Heart size={24} />
         </Link>
       </li>
       <li>
@@ -15,8 +16,11 @@ const IconsNav = () => {
       </li>
       <li>
         <Link href="/cart">
-          <LuShoppingCart size={24} />
+          <ShoppingCart size={24} />
         </Link>
+      </li>
+      <li className="md:hidden">
+        <MobileNav />
       </li>
     </ul>
   );
