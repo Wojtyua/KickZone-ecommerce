@@ -1,6 +1,10 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
 import ProductCard from "@/app/_components/ProductCard";
 import { filterProducts } from "@/app/_utils/filterProducts";
 import { ProductType } from "@/app/_lib/mongodb/db.types";
+import Spinner from "@/app/_components/Spinner";
 
 type ProductsListProps = {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -8,7 +12,23 @@ type ProductsListProps = {
 };
 
 const ProductsList = ({ searchParams, products }: ProductsListProps) => {
-  const filteredProducts = filterProducts(products, { searchParams });
+  const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const applyFilters = useCallback(() => {
+    setIsLoading(true);
+    const filtered = filterProducts(products, { searchParams });
+    setFilteredProducts(filtered);
+    setIsLoading(false);
+  }, [products, searchParams]);
+
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   if (filteredProducts.length === 0) {
     return <p>No products found matching your criteria.</p>;

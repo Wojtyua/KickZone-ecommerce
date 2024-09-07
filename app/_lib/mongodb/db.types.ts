@@ -5,15 +5,14 @@ export type ProductType = {
   price: number;
   description: string;
   featured: boolean;
-  target_group: string;
-  categories: string[]; // Tablica stringów dla kategorii
-  images: string[]; // Tablica stringów dla URL obrazów
+  target_group: "men" | "women";
+  categories: string[];
+  images: string[];
   variants: {
     size: number;
     quantity: number;
-  }[]; // Tablica obiektów dla wariantów
+  }[];
 };
-
 export type UserType = {
   _id: string;
   email: string;
@@ -21,4 +20,4 @@ export type UserType = {
   name: string;
   phone: string;
   image: string;
-}
+};

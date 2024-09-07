@@ -28,7 +28,7 @@ const MobileNav = () => {
 
   return (
     <div className="md:hidden">
-      <Menu size={26} onClick={toggleMenu} />
+      <Menu size={26} onClick={toggleMenu} className="hover:cursor-pointer" />
 
       <AnimatePresence>
         {isMenuOpen && (
@@ -49,7 +49,11 @@ const MobileNav = () => {
               exit="exit"
             >
               <div className="flex justify-end items-center h-[84px] p-6">
-                <X size={26} onClick={toggleMenu} />
+                <X
+                  size={26}
+                  onClick={toggleMenu}
+                  className="hover:cursor-pointer"
+                />
               </div>
               <div className="flex flex-col space-y-14 py-5 px-7">
                 <nav>

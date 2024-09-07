@@ -1,23 +1,19 @@
-import FeaturedProductsList from "@/app/_components/FeaturedProductsList";
 import { Suspense } from "react";
-
-export const revalidate = 3600;
+import FeaturedProducts from "@/app/_components/shop/FeaturedProducts";
+import Spinner from "@/app/_components/Spinner";
 
 export const metadata = {
-  title: "Shop now",
+  title: "Featured Products | Our Shop",
+  description: "Check out our featured products",
 };
 
-const Page = () => {
+export default function ShopPage() {
   return (
     <div>
-      <h1 className="text-2xl">Featured Products</h1>
-      <p>our most popular sneakers 🤓 very cool 👍</p>
-
-      <Suspense fallback={<div>Loading featured prods only...</div>}>
-        <FeaturedProductsList />
+      <h2 className="text-2xl font-semibold mb-4">Featured Products</h2>
+      <Suspense fallback={<Spinner />}>
+        <FeaturedProducts />
       </Suspense>
     </div>
   );
-};
-
-export default Page;
+}

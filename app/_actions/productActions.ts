@@ -6,9 +6,15 @@ import { ProductType } from "@/app/_lib/mongodb/db.types";
 import { Types } from "mongoose";
 import { shoesData } from "@/data";
 
-type ProductResult = { success: boolean; message: string };
-type GetProductResult = ProductResult & { data: ProductType[] };
-type GetProductByIdResult = ProductResult & { data: ProductType };
+type Placeholder = { success: boolean; message: string };
+type GetProductResult = Placeholder & { data: ProductType[] };
+type GetProductByIdResult = Placeholder & { data: ProductType };
+
+type ProductResult = {
+  success: boolean;
+  message: string;
+  data: ProductType[];
+};
 
 export async function addShoesToDatabase() {
   try {
@@ -31,7 +37,7 @@ export async function addShoesToDatabase() {
 // this needs use client to work
 export const createProduct = async (
   productData: ProductType
-): Promise<ProductResult> => {
+): Promise<Placeholder> => {
   await connectToMongoDB();
   try {
     // Creating a new todo using Todo model
@@ -82,50 +88,45 @@ export const getAllProducts = async (): Promise<GetProductResult> => {
   }
 };
 
-export const getProductByTargetGroup = async (
+export async function getProductByTargetGroup(
   targetGroup: "men" | "women"
-): Promise<GetProductResult> => {
-  await connectToMongoDB();
-
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
+): Promise<ProductResult> {
   try {
-    const products: ProductType[] = await Product.find({
-      target_group: targetGroup,
-    });
+    await connectToMongoDB();
+    const products = await Product.find({ target_group: targetGroup }).lean();
     return {
-      data: products,
       success: true,
-      message: `Products fetched by target group successfully`,
+      message: `Products for ${targetGroup} fetched successfully`,
+      data: JSON.parse(JSON.stringify(products)),
     };
-  } catch (error: any) {
+  } catch (error) {
+    console.error(`Error fetching products for ${targetGroup}:`, error);
     return {
-      data: [],
       success: false,
-      message: `Error fetching products by target group: ${error.message}`,
+      message: `Failed to fetch products for ${targetGroup}`,
+      data: [],
     };
   }
-};
+}
 
-export const getFeaturedProducts = async (): Promise<GetProductResult> => {
-  await connectToMongoDB();
+export async function getFeaturedProducts(): Promise<ProductResult> {
   try {
-    const products: ProductType[] = await Product.find({
-      featured: true,
-    });
+    await connectToMongoDB();
+    const products = await Product.find({ featured: true }).limit(8).lean();
     return {
-      data: products,
       success: true,
-      message: `Featured products fetched successfully`,
+      message: "Featured products fetched successfully",
+      data: JSON.parse(JSON.stringify(products)),
     };
-  } catch (error: any) {
+  } catch (error) {
+    console.error("Error fetching featured products:", error);
     return {
-      data: [],
       success: false,
-      message: `Error fetching featured products: ${error.message}`,
+      message: "Failed to fetch featured products",
+      data: [],
     };
   }
-};
+}
 
 export const getProductById = async (
   productId: string
@@ -160,7 +161,7 @@ export const decreaseProductQuantity = async (
   productId: string,
   variantSize: number,
   amount: number
-): Promise<ProductResult> => {
+): Promise<Placeholder> => {
   await connectToMongoDB();
   try {
     if (amount <= 0) {
