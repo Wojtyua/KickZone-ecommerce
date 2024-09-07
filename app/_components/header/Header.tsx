@@ -1,13 +1,13 @@
+import Logo from "@/app/_components/Logo";
+import Navigation from "@/app/_components/header/Nav";
 import IconsNav from "@/app/_components/header/IconsNav";
-import Logo from "../Logo";
-import Nav from "./Nav";
 
 const Header = () => {
   return (
     <header>
-      <div className="p-6 flex justify-between align-middle">
+      <div className="p-6 flex justify-between items-center">
         <Logo />
-        <Nav />
+        <Navigation />
         <IconsNav />
       </div>
     </header>

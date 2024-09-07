@@ -34,7 +34,7 @@ const MobileNav = () => {
         {isMenuOpen && (
           <>
             <motion.div
-              className="fixed top-0 left-0 h-screen w-screen bg-black bg-opacity-5 backdrop-blur-sm z-10 md:hidden"
+              className="fixed inset-0 bg-black/80 z-10 md:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.1, duration: 0.2 }}

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 interface CartItem {
   id: string;
@@ -13,24 +13,23 @@ interface CartItem {
 interface CartState {
   items: CartItem[];
   addItem: (item: CartItem) => void;
-  removeItem: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  removeItem: (id: string, size: number) => void;
+  updateQuantity: (id: string, size: number, quantity: number) => void;
   clearCart: () => void;
+  getTotalItems: () => number;
+  getTotalPrice: () => number;
 }
 
-// Store
 export const useCartStore = create(
   persist<CartState>(
-    (set) => ({
+    (set, get) => ({
       items: [],
-      addItem: (item: CartItem) => {
+      addItem: (item) =>
         set((state) => {
           const existingItem = state.items.find(
             (i) => i.id === item.id && i.size === item.size
           );
           if (existingItem) {
-            // Jeśli przedmiot już istnieje, zwiększ jego ilość
-            console.log("Updating existing item quantity", existingItem, item);
             return {
               items: state.items.map((i) =>
                 i.id === item.id && i.size === item.size
@@ -39,33 +38,35 @@ export const useCartStore = create(
               ),
             };
           }
-          console.log("Adding new item to cart", item);
-          // Dodaj nowy przedmiot do koszyka
           return { items: [...state.items, item] };
-        });
-      },
-      removeItem: (id: string) => {
-        console.log("Removing item from cart", id);
+        }),
+      removeItem: (id, size) =>
         set((state) => ({
-          items: state.items.filter((item) => item.id !== id),
-        }));
-      },
-      updateQuantity: (id: string, quantity: number) => {
-        console.log("Updating item quantity", id, quantity);
+          items: state.items.filter(
+            (item) => !(item.id === id && item.size === size)
+          ),
+        })),
+      updateQuantity: (id, size, quantity) =>
         set((state) => ({
           items: state.items.map((item) =>
-            item.id === id ? { ...item, quantity } : item
+            item.id === id && item.size === size ? { ...item, quantity } : item
           ),
-        }));
+        })),
+      clearCart: () => set({ items: [] }),
+      getTotalItems: () => {
+        const state = get();
+        return state.items.reduce((total, item) => total + item.quantity, 0);
       },
-      clearCart: () => {
-        console.log("Clearing cart");
-        set({ items: [] });
+      getTotalPrice: () => {
+        const state = get();
+        return state.items.reduce(
+          (total, item) => total + item.price * item.quantity,
+          0
+        );
       },
     }),
     {
-      name: "cartStorage",
-      storage: createJSONStorage(() => localStorage),
+      name: "cart-storage",
     }
   )
 );

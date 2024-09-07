@@ -1,7 +1,19 @@
 import Link from "next/link";
-import { Heart, ShoppingCart } from "lucide-react";
-import UserMenu from "@/app/_components/UserMenu";
-import MobileNav from "@/app/_components/header/MobileNav";
+import dynamic from "next/dynamic";
+import { Heart, UserRound, ShoppingCart, Menu } from "lucide-react";
+
+const UserMenu = dynamic(() => import("@/app/_components/UserMenu"), {
+  ssr: false,
+  loading: () => <UserRound size={26} />, // placeholder
+});
+const CartDrawer = dynamic(() => import("@/app/_components/CartDrawer"), {
+  ssr: false,
+  loading: () => <ShoppingCart size={26} />, // placeholder
+});
+const MobileNav = dynamic(() => import("@/app/_components/header/MobileNav"), {
+  ssr: false,
+  loading: () => <Menu size={26} />, // placeholder
+});
 
 const IconsNav = () => {
   return (
@@ -15,9 +27,7 @@ const IconsNav = () => {
         <UserMenu />
       </li>
       <li className="hidden sm:block">
-        <Link href="/cart">
-          <ShoppingCart size={26} />
-        </Link>
+        <CartDrawer />
       </li>
       <li className="md:hidden">
         <MobileNav />

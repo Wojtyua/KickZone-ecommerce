@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 const links = [
   { href: "/shop", label: "discover" },
@@ -9,25 +6,14 @@ const links = [
   { href: "/shop/womens", label: "womens" },
 ];
 
-// na pozniej pelne serce
-// <GoHeartFill />
-
 const Navigation = () => {
-  const pathname = usePathname();
-
   return (
     <nav className="hidden md:flex">
       <ul className="flex gap-12 font-medium text-lg uppercase items-center">
         {links.map((link) => (
           <li key={link.href}>
             <Link href={link.href}>
-              <span
-                className={`${
-                  pathname === link.href ? "underline underline-offset-4" : ""
-                }`}
-              >
-                {link.label}
-              </span>
+              <span>{link.label}</span>
             </Link>
           </li>
         ))}
