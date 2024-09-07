@@ -16,7 +16,7 @@ const ProductCard = async ({ product }: ProductCardProps) => {
         src={product.images[0]}
         alt="{product.product_model} image"
         width={200}
-        height={100}
+        height={150}
         className="h-60 w-full object-cover"
         priority
       />

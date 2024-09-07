@@ -12,7 +12,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { ShoppingCart } from "lucide-react";
+import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -23,11 +23,11 @@ const CartDrawer = () => {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <div className="relative">
+        <div className="relative hover:cursor-pointer">
           <ShoppingCart size={26} />
 
           {getTotalItems() > 0 && (
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+            <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs">
               {getTotalItems()}
             </span>
           )}
@@ -49,43 +49,53 @@ const CartDrawer = () => {
             {items.map((item) => (
               <div
                 key={`${item.id}-${item.size}`}
-                className="flex items-center justify-between mb-4"
+                className="grid grid-cols-[4fr_2fr_4fr] items-center mb-4 justify-center"
               >
-                <Image
-                  src={item.imageUrl}
-                  alt={item.model}
-                  width={50}
-                  height={50}
-                />
-                <div>
-                  <p>{item.model}</p>
-                  <p>Size: {item.size}</p>
+                <div className="flex gap-2 items-center">
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.model}
+                    width={50}
+                    height={50}
+                    className="rounded-lg h-auto w-auto p-2"
+                  />
+                  <div>
+                    <p className="font-semibold">{item.model}</p>
+                    <p>Size: {item.size}</p>
+                  </div>
                 </div>
-                <div>
+                <div className="mx-auto">
                   <Button
+                    variant="outline"
+                    size="sm"
                     onClick={() =>
                       updateQuantity(item.id, item.size, item.quantity - 1)
                     }
                     disabled={item.quantity === 1}
                   >
-                    -
+                    <Minus size={16} />
                   </Button>
                   <span className="mx-2">{item.quantity}</span>
                   <Button
+                    variant="outline"
+                    size="sm"
                     onClick={() =>
                       updateQuantity(item.id, item.size, item.quantity + 1)
                     }
                   >
-                    +
+                    <Plus size={16} />
                   </Button>
                 </div>
-                <p>${item.price * item.quantity}</p>
-                <Button
-                  variant="destructive"
-                  onClick={() => removeItem(item.id, item.size)}
-                >
-                  Remove
-                </Button>
+                <div className="flex gap-2 items-center justify-end">
+                  <p>${item.price * item.quantity}</p>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => removeItem(item.id, item.size)}
+                  >
+                    <Trash2 size={16} />
+                  </Button>
+                </div>
               </div>
             ))}
             <div className="mt-4 text-right">

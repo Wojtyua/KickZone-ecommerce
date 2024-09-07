@@ -1,4 +1,3 @@
-// app/_components/UserMenu.tsx
 "use client";
 
 import { useState } from "react";
@@ -10,8 +9,6 @@ import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
@@ -32,7 +29,7 @@ const UserMenu = () => {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <UserRound size={26} />
+        <UserRound size={26} className="hover:cursor-pointer" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {status === "authenticated" && session?.user ? (
