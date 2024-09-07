@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Heart, Menu, ShoppingCart, UserRound, X } from "lucide-react";
+import { Heart, LogOut, Menu, ShoppingCart, UserRound, X } from "lucide-react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 const MobileNav = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -78,7 +78,10 @@ const MobileNav = () => {
                         </h3>
                         <p>Great to see you!</p>
                       </div>
-                      <Button onClick={handleSignOut}>Sign out</Button>
+
+                      <Button onClick={handleSignOut}>
+                        <LogOut className="size-4 mr-2" /> Log out
+                      </Button>
                     </div>
                   ) : (
                     <div className="space-y-4">

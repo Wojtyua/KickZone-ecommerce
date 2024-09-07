@@ -4,21 +4,27 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import { UserRound } from "lucide-react";
+import { LogOut, UserRound } from "lucide-react";
+import Link from "next/link";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
 const UserMenu = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const toggleMenu = () => setIsOpen(!isOpen);
 
   const handleSignOut = async () => {
+    toggleMenu();
     await signOut({ redirect: false });
     router.push("/");
   };
@@ -31,21 +37,41 @@ const UserMenu = () => {
       <DropdownMenuContent align="end">
         {status === "authenticated" && session?.user ? (
           <>
-            <DropdownMenuItem>
-              Welcome, {session.user.name || session.user.email}!
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleSignOut}>
-              Sign out
-            </DropdownMenuItem>
+            <div className="p-3 flex flex-col space-y-3">
+              <div className="space-y-1">
+                <h3>
+                  Hi,{" "}
+                  <span className="font-semibold">{session?.user?.name}</span>
+                </h3>
+                <p>Great to see you!</p>
+              </div>
+              <Separator />
+              <Link href="/account">
+                <div className="flex gap-2 p-2 rounded-lg transition-colors hover:bg-muted">
+                  <UserRound /> My account
+                </div>
+              </Link>
+              <Separator />
+              <Button size="sm" onClick={handleSignOut}>
+                <LogOut className="size-4 mr-2" /> Log out
+              </Button>
+            </div>
           </>
         ) : (
           <>
-            <DropdownMenuItem onClick={() => router.push("/login")}>
-              Sign in
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => router.push("/register")}>
-              Register
-            </DropdownMenuItem>
+            <div className="p-3 flex flex-col space-y-3">
+              <h3>Log in or Sign up</h3>
+              <div className="flex gap-2">
+                <Link href="/login">
+                  <Button onClick={toggleMenu} size="sm" variant="outline">
+                    Log in
+                  </Button>
+                </Link>
+                <Link onClick={toggleMenu} href="/register">
+                  <Button size="sm">Sign up</Button>
+                </Link>
+              </div>
+            </div>
           </>
         )}
       </DropdownMenuContent>
