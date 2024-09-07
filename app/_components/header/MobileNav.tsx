@@ -2,11 +2,23 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Heart, Menu, ShoppingCart, UserRound, X } from "lucide-react";
+import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 const MobileNav = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut({ redirect: false });
+    router.push("/");
+    toggleMenu();
+  };
 
   const menuSlide = {
     initial: { x: "100%" },
@@ -16,7 +28,7 @@ const MobileNav = () => {
 
   return (
     <div className="md:hidden">
-      <Menu size={24} onClick={toggleMenu} />
+      <Menu size={26} onClick={toggleMenu} />
 
       <AnimatePresence>
         {isMenuOpen && (
@@ -30,24 +42,89 @@ const MobileNav = () => {
               onClick={toggleMenu}
             ></motion.div>
             <motion.aside
-              className="fixed p-6 top-0 right-0 h-full w-80 z-50 bg-background md:hidden"
+              className="fixed p-2 top-0 right-0 h-full w-80 z-50 shadow-md bg-background md:hidden"
               variants={menuSlide}
               initial="initial"
               animate="enter"
               exit="exit"
             >
-              <div className=" flex h-16 items-center justify-end ">
-                <X size={24} onClick={toggleMenu} />
+              <div className="flex justify-end items-center h-[84px] p-6">
+                <X size={26} onClick={toggleMenu} />
               </div>
-              <div className="flex flex-col text-2xl space-y-12 font-medium py-2 px-10">
-                <div className="flex flex-col space-y-4">
-                  <h1>siema</h1>
+              <div className="flex flex-col space-y-14 py-5 px-7">
+                <nav>
+                  <ul className="uppercase flex flex-col space-y-6 text-2xl font-semibold">
+                    <li onClick={toggleMenu}>
+                      <Link href="/shop">Discover</Link>
+                    </li>
+                    <li onClick={toggleMenu}>
+                      <Link href="/shop/mens">Mens</Link>
+                    </li>
+                    <li onClick={toggleMenu}>
+                      <Link href="/shop/womens">Womens</Link>
+                    </li>
+                  </ul>
+                </nav>
+
+                <div>
+                  {status === "authenticated" && session?.user ? (
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <h3 className="text-xl">
+                          Hi,{" "}
+                          <span className="font-semibold">
+                            {session?.user?.name}
+                          </span>
+                        </h3>
+                        <p>Great to see you!</p>
+                      </div>
+                      <Button onClick={handleSignOut}>Sign out</Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <h3 className="tracking-wide">
+                        Sign up or log in to explore our exclusive collection
+                        and get access to special offers.
+                      </h3>
+                      <div className="flex gap-2">
+                        <Link href="/login">
+                          <Button variant="outline" onClick={toggleMenu}>
+                            Log in
+                          </Button>
+                        </Link>
+                        <Link href="/register">
+                          <Button onClick={toggleMenu}>Sign up</Button>
+                        </Link>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="text-lg">
-                  <h1>siema</h1>
-                </div>
-                <div className="text-base font-semibold">
-                  <h1>siema</h1>
+                <div>
+                  <nav>
+                    <ul className="flex flex-col space-y-6">
+                      <li>
+                        <Link href="/favorites">
+                          <div className="flex gap-3 font-semibold text-lg items-center">
+                            <Heart /> Favorites
+                          </div>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/account">
+                          <div className="flex gap-3 font-semibold text-lg items-center">
+                            <UserRound /> Account
+                          </div>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/cart">
+                          <div className="flex gap-3 font-semibold text-lg items-center">
+                            <ShoppingCart /> Cart
+                          </div>
+                        </Link>
+                      </li>
+                    </ul>
+                  </nav>
                 </div>
               </div>
             </motion.aside>

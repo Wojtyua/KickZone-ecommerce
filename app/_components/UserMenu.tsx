@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { UserRound } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,15 +21,12 @@ const UserMenu = () => {
   const handleSignOut = async () => {
     await signOut({ redirect: false });
     router.push("/");
-    router.refresh();
   };
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="p-0">
-          <UserRound size={24} />
-        </Button>
+        <UserRound size={26} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {status === "authenticated" && session?.user ? (

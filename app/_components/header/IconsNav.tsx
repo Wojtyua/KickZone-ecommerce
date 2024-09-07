@@ -5,18 +5,18 @@ import MobileNav from "@/app/_components/header/MobileNav";
 
 const IconsNav = () => {
   return (
-    <ul className="flex gap-8 capitalize text-sm items-center">
-      <li>
+    <ul className="flex gap-6 md:gap-8 capitalize text-sm items-center">
+      <li className="hidden sm:block">
         <Link href="/favorites">
-          <Heart size={24} />
+          <Heart size={26} />
         </Link>
       </li>
-      <li>
+      <li className="hidden sm:block">
         <UserMenu />
       </li>
-      <li>
+      <li className="hidden sm:block">
         <Link href="/cart">
-          <ShoppingCart size={24} />
+          <ShoppingCart size={26} />
         </Link>
       </li>
       <li className="md:hidden">

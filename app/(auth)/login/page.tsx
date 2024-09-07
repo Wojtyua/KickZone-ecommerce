@@ -23,9 +23,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
+import { CircleAlert, Loader2 } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
