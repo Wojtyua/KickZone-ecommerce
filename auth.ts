@@ -1,4 +1,3 @@
-// app/auth.ts
 import NextAuth from "next-auth";
 import type { NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -36,6 +35,7 @@ export const authConfig: NextAuthConfig = {
           id: user._id.toString(),
           email: user.email,
           name: user.name,
+          favoriteProducts: user.favoriteProducts || [],
         };
       },
     }),
@@ -46,6 +46,7 @@ export const authConfig: NextAuthConfig = {
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
+        token.favoriteProducts = user.favoriteProducts;
       }
       return token;
     },
@@ -54,6 +55,8 @@ export const authConfig: NextAuthConfig = {
         session.user.id = token.id as string;
         session.user.email = token.email as string;
         session.user.name = token.name as string;
+        session.user.favoriteProducts =
+          (token.favoriteProducts as string[]) || [];
       }
       return session;
     },

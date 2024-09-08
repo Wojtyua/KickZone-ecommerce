@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import { LogOut, UserRound } from "lucide-react";
+import { Heart, History, LogOut, UserRound, UserRoundPen } from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -45,9 +45,24 @@ const UserMenu = () => {
                 <p>Great to see you!</p>
               </div>
               <Separator />
-              <Link href="/account">
+              <Link onClick={toggleMenu} href="/account">
                 <div className="flex gap-2 p-2 rounded-lg transition-colors hover:bg-muted">
                   <UserRound /> My account
+                </div>
+              </Link>
+              <Link onClick={toggleMenu} href="/account/favorites">
+                <div className="flex gap-2 p-2 rounded-lg transition-colors hover:bg-muted">
+                  <Heart /> Favorites
+                </div>
+              </Link>
+              <Link onClick={toggleMenu} href="/account/orders">
+                <div className="flex gap-2 p-2 rounded-lg transition-colors hover:bg-muted">
+                  <History /> Orders history
+                </div>
+              </Link>
+              <Link onClick={toggleMenu} href="/account/profile">
+                <div className="flex gap-2 p-2 rounded-lg transition-colors hover:bg-muted">
+                  <UserRoundPen /> Edit Profile
                 </div>
               </Link>
               <Separator />

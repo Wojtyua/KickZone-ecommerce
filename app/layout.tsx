@@ -7,6 +7,8 @@ import "./globals.css";
 import { connectToMongoDB } from "@/app/_lib/mongodb/db";
 import Header from "@/app/_components/header/Header";
 import Footer from "@/app/_components/Footer";
+import { Toaster } from "@/components/ui/toaster";
+import FavoritesSync from "@/app/_components/FavoritesSync";
 
 const font = Be_Vietnam_Pro({
   weight: ["400", "500", "600", "700", "800", "900"],
@@ -36,6 +38,7 @@ export default async function RootLayout({
         className={`relative bg-background text-text-100 min-h-screen flex flex-col  ${font.className}`}
       >
         <SessionProvider session={session}>
+          <FavoritesSync />
           <div className="max-w-screen-2xl mx-auto w-full p-2">
             <Header />
             <div className="flex-1 grid">
@@ -44,6 +47,7 @@ export default async function RootLayout({
           </div>
         </SessionProvider>
         <Footer />
+        <Toaster />
       </body>
     </html>
   );

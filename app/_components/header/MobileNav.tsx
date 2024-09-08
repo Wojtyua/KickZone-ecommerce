@@ -93,13 +93,6 @@ const MobileNav = () => {
           <nav>
             <ul className="space-y-2">
               <li>
-                <Link href="/favorites" onClick={() => setOpen(false)}>
-                  <Button variant="ghost" className="w-full justify-start">
-                    <Heart className="mr-2 h-4 w-4" /> Favorites
-                  </Button>
-                </Link>
-              </li>
-              <li>
                 <Link href="/account" onClick={() => setOpen(false)}>
                   <Button variant="ghost" className="w-full justify-start">
                     <UserRound className="mr-2 h-4 w-4" /> Account

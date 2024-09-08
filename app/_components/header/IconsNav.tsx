@@ -35,13 +35,6 @@ const IconsNav = () => {
   return (
     <ul className="flex gap-4 md:gap-6 capitalize text-sm items-center">
       <li className="hidden sm:block">
-        <Link href="/favorites">
-          <Button variant="ghost" size="icon">
-            <Heart size={26} />
-          </Button>
-        </Link>
-      </li>
-      <li className="hidden sm:block">
         <UserMenu />
       </li>
       <li className="hidden sm:block">

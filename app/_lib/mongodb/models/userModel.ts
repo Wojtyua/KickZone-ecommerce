@@ -1,12 +1,44 @@
-// app/_lib/mongodb/models/userModel.ts
-
 import mongoose, { Schema, model, Document } from "mongoose";
 
 export interface UserType extends Document {
   email: string;
   password: string;
   name: string;
+  favoriteProducts: string[];
+  orderHistory: OrderType[];
 }
+
+export interface OrderType {
+  orderId: string;
+  date: Date;
+  products: {
+    productId: string;
+    quantity: number;
+    size: number;
+    price: number;
+  }[];
+  totalAmount: number;
+  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+}
+
+const OrderSchema = new Schema<OrderType>({
+  orderId: { type: String, required: true },
+  date: { type: Date, default: Date.now },
+  products: [
+    {
+      productId: { type: String, required: true },
+      quantity: { type: Number, required: true },
+      size: { type: Number, required: true },
+      price: { type: Number, required: true },
+    },
+  ],
+  totalAmount: { type: Number, required: true },
+  status: {
+    type: String,
+    enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
+    default: "pending",
+  },
+});
 
 const UserSchema = new Schema<UserType>(
   {
@@ -21,6 +53,8 @@ const UserSchema = new Schema<UserType>(
     },
     password: { type: String, required: true, select: false },
     name: { type: String, required: [true, "Name is required"] },
+    favoriteProducts: [{ type: String, ref: "Product" }],
+    orderHistory: [OrderSchema],
   },
   { timestamps: true }
 );
