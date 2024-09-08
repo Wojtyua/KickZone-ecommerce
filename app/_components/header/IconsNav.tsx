@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { Heart, UserRound, ShoppingCart, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const UserMenu = dynamic(() => import("@/app/_components/UserMenu"), {
+const UserMenu = dynamic(() => import("@/app/_components/header/UserMenu"), {
   ssr: false,
   loading: () => (
     <Button variant="ghost" size="icon">
@@ -11,14 +11,17 @@ const UserMenu = dynamic(() => import("@/app/_components/UserMenu"), {
     </Button>
   ),
 });
-const CartDrawer = dynamic(() => import("@/app/_components/CartDrawer"), {
-  ssr: false,
-  loading: () => (
-    <Button variant="ghost" size="icon">
-      <ShoppingCart size={26} />
-    </Button>
-  ),
-});
+const CartDrawer = dynamic(
+  () => import("@/app/_components/header/CartDrawer"),
+  {
+    ssr: false,
+    loading: () => (
+      <Button variant="ghost" size="icon">
+        <ShoppingCart size={26} />
+      </Button>
+    ),
+  }
+);
 const MobileNav = dynamic(() => import("@/app/_components/header/MobileNav"), {
   ssr: false,
   loading: () => (

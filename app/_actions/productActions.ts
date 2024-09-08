@@ -94,6 +94,10 @@ export async function getProductByTargetGroup(
   try {
     await connectToMongoDB();
     const products = await Product.find({ target_group: targetGroup }).lean();
+
+    // Simulate a delay of 2 seconds
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     return {
       success: true,
       message: `Products for ${targetGroup} fetched successfully`,

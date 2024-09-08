@@ -1,4 +1,3 @@
-// app/_utils/filterProducts.ts
 import { ProductType } from "@/app/_lib/mongodb/db.types";
 
 type SearchParams = {
