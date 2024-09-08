@@ -1,33 +1,28 @@
-import mongoose from "mongoose";
+// Importing mongoose library along with Connection type from it
+import mongoose, { Connection } from "mongoose";
 
-declare global {
-  var mongoose: {
-    conn: typeof mongoose | null;
-    promise: Promise<typeof mongoose> | null;
-  };
-}
+// Declaring a variable to store the cached database connection
+let cachedConnection: Connection | null = null;
 
-if (!global.mongoose) {
-  global.mongoose = { conn: null, promise: null };
-}
-
+// Function to establish a connection to MongoDB
 export async function connectToMongoDB() {
-  if (global.mongoose.conn) {
-    return global.mongoose.conn;
-  }
-
-  if (!global.mongoose.promise) {
-    const uri = process.env.MONGODB_URI!;
-    global.mongoose.promise = mongoose.connect(uri, {
-      bufferCommands: false,
-    });
+  // If a cached connection exists, return it
+  if (cachedConnection) {
+    console.log("Using cached db connection");
+    return cachedConnection;
   }
   try {
-    global.mongoose.conn = await global.mongoose.promise;
-  } catch (e) {
-    global.mongoose.promise = null;
-    throw e;
+    // If no cached connection exists, establish a new connection to MongoDB
+    const cnx = await mongoose.connect(process.env.MONGODB_URI!);
+    // Cache the connection for future use
+    cachedConnection = cnx.connection;
+    // Log message indicating a new MongoDB connection is established
+    console.log("New mongodb connection established");
+    // Return the newly established connection
+    return cachedConnection;
+  } catch (error) {
+    // If an error occurs during connection, log the error and throw it
+    console.log(error);
+    throw error;
   }
-
-  return global.mongoose.conn;
 }
