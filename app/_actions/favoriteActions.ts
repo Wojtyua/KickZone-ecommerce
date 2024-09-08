@@ -2,9 +2,11 @@
 
 import { connectToMongoDB } from "@/app/_lib/mongodb/db";
 import User from "@/app/_lib/mongodb/models/userModel";
+import Product from "@/app/_lib/mongodb/models/productModel";
 import { auth } from "@/auth";
+import { ProductType } from "@/app/_lib/mongodb/db.types";
+import { UserType } from "@/app/_lib/mongodb/models/userModel";
 
-// Helper function to serialize MongoDB documents
 const serializeDocument = (doc: any) => {
   return JSON.parse(JSON.stringify(doc));
 };
@@ -18,16 +20,19 @@ export async function getFavorites() {
 
   try {
     await connectToMongoDB();
-    const user = await User.findOne({ email: session.user.email }).populate(
-      "favoriteProducts"
-    );
+    const user = (await User.findOne({
+      email: session.user.email,
+    }).lean()) as UserType;
 
     if (!user) {
       return { success: false, message: "User not found", data: [] };
     }
 
-    // Serialize the favoriteProducts before returning
-    const serializedFavorites = serializeDocument(user.favoriteProducts);
+    const favoriteProducts = (await Product.find({
+      _id: { $in: user.favoriteProducts },
+    }).lean()) as ProductType[];
+
+    const serializedFavorites = serializeDocument(favoriteProducts);
 
     return {
       success: true,

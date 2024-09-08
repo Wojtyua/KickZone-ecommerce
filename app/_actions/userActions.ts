@@ -3,7 +3,6 @@
 import { connectToMongoDB } from "@/app/_lib/mongodb/db";
 import User from "@/app/_lib/mongodb/models/userModel";
 import bcrypt from "bcryptjs";
-import { signIn } from "@/auth"; // Importuj signIn z twojego pliku auth.ts
 
 export async function registerUser(data: {
   name: string;

@@ -1,43 +1,54 @@
 import mongoose, { Schema, model, Document } from "mongoose";
+import { ProductType } from "@/app/_lib/mongodb/db.types";
+
+export interface OrderType {
+  orderId: string;
+  fullName: string;
+  email: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  items: {
+    productId: string;
+    quantity: number;
+    price: number;
+    size: number;
+  }[];
+  totalAmount: number;
+  status: "pending" | "completed" | "cancelled";
+  createdAt: Date;
+}
 
 export interface UserType extends Document {
   email: string;
   password: string;
   name: string;
-  favoriteProducts: string[];
-  orderHistory: OrderType[];
-}
-
-export interface OrderType {
-  orderId: string;
-  date: Date;
-  products: {
-    productId: string;
-    quantity: number;
-    size: number;
-    price: number;
-  }[];
-  totalAmount: number;
-  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+  favoriteProducts: mongoose.Types.ObjectId[] | ProductType[];
+  orders: OrderType[];
 }
 
 const OrderSchema = new Schema<OrderType>({
   orderId: { type: String, required: true },
-  date: { type: Date, default: Date.now },
-  products: [
+  fullName: { type: String, required: true },
+  email: { type: String, required: true },
+  address: { type: String, required: true },
+  city: { type: String, required: true },
+  postalCode: { type: String, required: true },
+  items: [
     {
       productId: { type: String, required: true },
       quantity: { type: Number, required: true },
-      size: { type: Number, required: true },
       price: { type: Number, required: true },
+      size: { type: Number, required: true },
     },
   ],
-  totalAmount: { type: Number, required: true },
+  totalAmount: { type: Number, required: true }, // Zmienione z 'amount' na 'totalAmount'
   status: {
     type: String,
-    enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
-    default: "pending",
+    enum: ["pending", "completed", "cancelled"],
+    default: "completed",
   },
+  createdAt: { type: Date, default: Date.now },
 });
 
 const UserSchema = new Schema<UserType>(
@@ -54,7 +65,7 @@ const UserSchema = new Schema<UserType>(
     password: { type: String, required: true, select: false },
     name: { type: String, required: [true, "Name is required"] },
     favoriteProducts: [{ type: String, ref: "Product" }],
-    orderHistory: [OrderSchema],
+    orders: [OrderSchema],
   },
   { timestamps: true }
 );

@@ -5,9 +5,9 @@ import { usePathname } from "next/navigation";
 
 const accountLinks = [
   { href: "/account", label: "Account Overview" },
-  { href: "/account/profile", label: "Profile" },
   { href: "/account/favorites", label: "Favorites" },
-  // Add more account-related links as needed
+  { href: "/account/orders", label: "Order History" },
+  { href: "/account/profile", label: "Profile" },
 ];
 
 export default function AccountLayout({
