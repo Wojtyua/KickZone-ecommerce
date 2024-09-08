@@ -1,8 +1,7 @@
-// app/_components/shop/FilterSidebar.tsx
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Toggle } from "@/components/ui/toggle";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,6 +19,8 @@ export default function FilterSidebar({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
+
   const [filters, setFilters] = useState({
     brand: searchParams.getAll("brand"),
     category: searchParams.getAll("category"),
@@ -69,8 +70,14 @@ export default function FilterSidebar({
   }, [filters, router, searchParams]);
 
   const resetFilters = useCallback(() => {
-    router.push(".", { scroll: false });
-  }, [router]);
+    setFilters({
+      brand: [],
+      category: [],
+      minPrice: "",
+      maxPrice: "",
+    });
+    router.push(pathname, { scroll: false });
+  }, [router, pathname]);
 
   return (
     <div className="space-y-4">

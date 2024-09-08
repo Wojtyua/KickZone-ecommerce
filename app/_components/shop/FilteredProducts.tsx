@@ -1,4 +1,3 @@
-// app/_components/shop/FilteredProducts.tsx
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -52,16 +51,16 @@ export default function FilteredProducts({
 
   return (
     <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex-1">
+        <div className="md:hidden mb-4 text-right">
+          <MobileFilterDrawer filterOptions={filterOptions} />
+        </div>
+        <ProductGrid products={filteredProducts} />
+      </div>
       <div className="md:w-64">
         <div className="hidden md:block">
           <FilterSidebar filterOptions={filterOptions} />
         </div>
-        <div className="block md:hidden mb-4">
-          <MobileFilterDrawer filterOptions={filterOptions} />
-        </div>
-      </div>
-      <div className="flex-1">
-        <ProductGrid products={filteredProducts} />
       </div>
     </div>
   );

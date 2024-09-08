@@ -29,7 +29,9 @@ const UserMenu = () => {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <UserRound size={26} className="hover:cursor-pointer" />
+        <Button variant="ghost" size="icon">
+          <UserRound size={26} />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {status === "authenticated" && session?.user ? (

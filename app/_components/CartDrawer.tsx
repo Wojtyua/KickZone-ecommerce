@@ -23,14 +23,16 @@ const CartDrawer = () => {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <div className="relative hover:cursor-pointer">
-          <ShoppingCart size={26} />
+        <div className="relative">
+          <Button variant="ghost" size="icon">
+            <ShoppingCart size={26} />
 
-          {getTotalItems() > 0 && (
-            <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs">
-              {getTotalItems()}
-            </span>
-          )}
+            {getTotalItems() > 0 && (
+              <span className="absolute bottom-0 right-0 bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                {getTotalItems()}
+              </span>
+            )}
+          </Button>
         </div>
       </DrawerTrigger>
       <DrawerContent>
@@ -89,7 +91,6 @@ const CartDrawer = () => {
                 <div className="flex gap-2 items-center justify-end">
                   <p>${item.price * item.quantity}</p>
                   <Button
-                    variant="destructive"
                     size="sm"
                     onClick={() => removeItem(item.id, item.size)}
                   >

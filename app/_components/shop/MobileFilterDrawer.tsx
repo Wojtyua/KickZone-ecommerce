@@ -1,4 +1,3 @@
-// app/_components/shop/MobileFilterDrawer.tsx
 "use client";
 
 import { Button } from "@/components/ui/button";
