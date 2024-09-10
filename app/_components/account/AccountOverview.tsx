@@ -7,7 +7,7 @@ export default async function AccountOverview() {
     <div>
       <h2 className="text-2xl font-bold mb-4">Account Overview</h2>
       <p>Welcome back, {session?.user?.name}!</p>
-      {/* Dodaj więcej informacji o koncie użytkownika */}
+      {/* tu cosik przyfetchować */}
       wiecej informacji o koncie uzytkownika
     </div>
   );

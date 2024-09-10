@@ -4,7 +4,7 @@ import IconsNav from "@/app/_components/header/IconsNav";
 
 const Header = () => {
   return (
-    <header>
+    <header className="border-b">
       <div className="p-6 flex justify-between items-center">
         <Logo />
         <Navigation />

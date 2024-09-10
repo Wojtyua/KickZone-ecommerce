@@ -27,7 +27,7 @@ export default async function ProductPage({
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">{product.product_model}</h1>
-        <FavoriteButton productId={product._id} />
+        {/* <FavoriteButton productId={product._id} /> */}
       </div>
       <Suspense fallback={<Spinner />}>
         <ProductDetail product={product} />

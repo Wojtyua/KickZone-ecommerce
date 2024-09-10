@@ -34,7 +34,7 @@ export default function ProfileForm() {
   });
 
   const onSubmit = async (data: ProfileFormValues) => {
-    // Implement profile update logic here
+    // add server-side action logic in user actions
     console.log(data);
   };
 

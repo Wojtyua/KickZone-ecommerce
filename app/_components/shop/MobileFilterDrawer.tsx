@@ -29,7 +29,7 @@ export default function MobileFilterDrawer({
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Filters</SheetTitle>
-          <SheetDescription>Narrow down your product search</SheetDescription>
+          <SheetDescription>Select what you are interested in</SheetDescription>
         </SheetHeader>
         <div className="mt-4">
           <FilterSidebar filterOptions={filterOptions} />

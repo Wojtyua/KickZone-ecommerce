@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Link from "next/link";
-import { CircleAlert, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -59,7 +59,6 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        // Handle different error scenarios
         switch (result.error) {
           case "CredentialsSignin":
             setError("Invalid email or password. Please try again.");

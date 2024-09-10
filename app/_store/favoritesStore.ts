@@ -22,7 +22,7 @@ export const useFavoritesStore = create<FavoritesState>((set, get) => ({
   isFetched: false,
   fetchFavorites: async () => {
     const state = get();
-    if (state.isFetched) return; // Nie fetchuj, jeśli już zostało zfetchowane
+    if (state.isFetched) return;
 
     set({ isLoading: true, error: null });
     try {

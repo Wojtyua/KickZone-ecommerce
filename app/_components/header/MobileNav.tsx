@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import { Heart, LogOut, Menu, ShoppingCart, UserRound } from "lucide-react";
+import { LogOut, Menu, ShoppingCart, UserRound } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,9 +36,7 @@ const MobileNav = () => {
       <SheetContent side="right">
         <SheetHeader>
           <SheetTitle>Menu</SheetTitle>
-          <SheetDescription>
-            Navigate through our shop and manage your account.
-          </SheetDescription>
+          <SheetDescription>Navigate through the shop</SheetDescription>
         </SheetHeader>
         <div className="flex flex-col space-y-4 mt-4">
           <nav>

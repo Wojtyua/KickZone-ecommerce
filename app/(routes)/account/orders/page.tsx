@@ -63,7 +63,7 @@ export default function OrderHistoryPage() {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-4">Order History</h1>
       {orders.length === 0 ? (
-        <p>You haven't placed any orders yet.</p>
+        <p>You haven&apos;t placed any orders yet.</p>
       ) : (
         <Table>
           <TableCaption>A list of your recent orders.</TableCaption>

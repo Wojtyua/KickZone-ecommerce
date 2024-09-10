@@ -59,7 +59,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ productId }) => {
       size="icon"
       disabled={isLoading}
     >
-      <Heart className={isFavorite ? "fill-current text-red-500" : ""} />
+      <Heart className={isFavorite ? "fill-current text-primary" : ""} />
     </Button>
   );
 };

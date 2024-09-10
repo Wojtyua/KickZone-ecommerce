@@ -1,8 +1,8 @@
-import Link from "next/link";
 import dynamic from "next/dynamic";
-import { Heart, UserRound, ShoppingCart, Menu } from "lucide-react";
+import { UserRound, ShoppingCart, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+// Lazy load
 const UserMenu = dynamic(() => import("@/app/_components/header/UserMenu"), {
   ssr: false,
   loading: () => (
